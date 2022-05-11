@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React,{useEffect} from 'react'
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player';
 
 
 const tracks = [
@@ -27,6 +27,7 @@ const tracks = [
 // });
 
 export default function App() {
+  const playbackState = usePlaybackState();
     const setUpTrackPlayer = async ()=>{
     try{
       await TrackPlayer.setupPlayer();
@@ -42,13 +43,23 @@ export default function App() {
     return ()=>TrackPlayer.destroy();
 
   },[])
+    const toggPlayback = async playbackState =>{
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+      if (currentTrack != null){
+        if(playbackState === State.Paused){
+          await TrackPlayer.play();
+        } else {
+          await TrackPlayer.pause();
+        }
+      }
+    }
   return (
     <View style={styles.container}>
      <View style={styles.row}>
-       <TouchableOpacity style={styles.btn} onPress={()=>TrackPlayer.pause()}>
+       <TouchableOpacity style={styles.btn} onPress={()=>toggPlayback(playbackState)}>
          <Text style={styles.text}>Pause</Text>
        </TouchableOpacity>
-       <TouchableOpacity style={styles.btn} onPress={()=>TrackPlayer.play()}>
+       <TouchableOpacity style={styles.btn} onPress={()=> toggPlayback(playbackState)}>
          <Text style={styles.text}>play</Text>
        </TouchableOpacity>
        </View>
