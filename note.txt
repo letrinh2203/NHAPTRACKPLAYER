@@ -1,0 +1,14 @@
+npm install --save react-native-track-player
+---
+sua loi k mo duoc cua track-player: vao android/build.gradle: them doan code
+jcenter(){
+            content{
+                includeGroup("com.google.android.exoplayer")
+            }
+        }
+//mave{}
+----
+npx react-native run-android
+----
+past 2 doan lenh vao file index.js va service.js trong link https://react-native-track-player.js.org/docs/basics/getting-started
+---
